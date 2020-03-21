@@ -7,6 +7,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 void main() => runApp(MaterialApp(home: WebViewExample()));
@@ -36,16 +37,20 @@ class _WebViewExampleState extends State<WebViewExample> {
   Completer<WebViewController>();
 
   @override
+  void dispose() {
+    super.dispose();
+    //向き指定
+    SystemChrome.setPreferredOrientations([
+    ]);
+  }
+  @override
   Widget build(BuildContext context) {
+    //向き指定
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,//縦固定
+    ]);
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter WebView example'),
-        // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
-        actions: <Widget>[
-          NavigationControls(_controller.future),
-          SampleMenu(_controller.future),
-        ],
-      ),
       // We're using a Builder here so we have a context that is below the Scaffold
       // to allow calling Scaffold.of(context) so we can show a snackbar.
       body: Builder(builder: (BuildContext context) {
